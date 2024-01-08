@@ -7,11 +7,12 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "subject")
+@Table(name = "subject",uniqueConstraints = @UniqueConstraint(columnNames = {"department_id"}))
 public class Subject implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "bigint UNSIGNED NOT NULL auto_increment")
     private Long id;
 
     @NotEmpty(message = "Ime je obavezno polje")
@@ -21,9 +22,12 @@ public class Subject implements Serializable {
     @Column(name = "espb")
     private int esbp;
 
-    @ManyToOne()
-    @JoinColumn(name = "department_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned not null",nullable = false)
     private Department department;
+
+//    @Column(name = "department_id",columnDefinition = "UNSIGNED BIGINT",nullable = false)
+//    private long departmentId;
 
     public Subject() {
     }
@@ -67,5 +71,11 @@ public class Subject implements Serializable {
         this.department = department;
     }
 
-
+//    public long getDepartmentId() {
+//        return departmentId;
+//    }
+//
+//    public void setDepartmentId(long departmentId) {
+//        this.departmentId = departmentId;
+//    }
 }

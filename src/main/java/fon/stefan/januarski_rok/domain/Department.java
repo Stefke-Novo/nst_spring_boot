@@ -11,6 +11,7 @@ import java.util.List;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "bigint unsigned not null auto_increment",nullable = false)
     private long Id;
     @NotEmpty(message = "Ime je obaezno polje")
     @Size(min = 2, max = 10, message = "Broj znakova je od 2 do 10")
@@ -18,6 +19,9 @@ public class Department {
     private String name;
     @OneToMany(mappedBy = "department")
     private List<Member> memberList;
+
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL,targetEntity = Subject.class)
+    private List<Subject> subjects;
 
     public Department(long id, String name) {
         Id = id;

@@ -11,13 +11,14 @@ import java.util.List;
 public class ScientificField {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "bigint unsigned not null auto_increment")
     private long id;
     private String name;
 
     public ScientificField() {
     }
     @OneToMany(mappedBy = "scientificField")
-    private List<Member> memberList;
+    private List<AcademicTitleHistory> memberList;
     public ScientificField(long id, String name) {
         this.id = id;
         this.name = name;
@@ -40,11 +41,11 @@ public class ScientificField {
         this.name = name;
     }
 
-    public List<Member> getMemberList() {
+    public List<AcademicTitleHistory> getMemberList() {
         return memberList;
     }
 
-    public void setMemberList(List<Member> memberList) {
+    public void setMemberList(List<AcademicTitleHistory> memberList) {
         this.memberList = memberList;
     }
 }

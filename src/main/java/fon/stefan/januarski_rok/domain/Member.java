@@ -9,9 +9,9 @@ import java.util.List;
 @IdClass(MemberId.class)
 public class Member{
 
+    @Column(name = "id",columnDefinition = "bigint unsigned auto_increment")
     @Id
-    @Column(name="id",columnDefinition = "bigint unsigned")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Id

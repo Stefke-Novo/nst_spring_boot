@@ -112,8 +112,8 @@ public class DepartmentController {
         return new ResponseEntity<>(myErrorDetails, HttpStatus.BAD_REQUEST);
 
     }
-    @GetMapping(path = "/department/{id}")
-    public ResponseEntity<DepartmentDto> getDepartmentWithMembers(long id) throws Exception {
-        return ResponseEntity.ok(departmentService.getDepartmentWithMembers(id));
-    }
+//    @GetMapping(path = "/department/{id}")
+//    public ResponseEntity<DepartmentDto> getDepartmentWithMembers(long id) throws Exception {
+//        return ResponseEntity.ok(departmentService.getDepartmentWithMembers(id));
+//    }
 }

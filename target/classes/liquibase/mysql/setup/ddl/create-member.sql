@@ -1,9 +1,8 @@
---create table member(
---id bigint unsigned not null AUTO_INCREMENT,
---first_name varchar(200) not null,
---last_name varchar(200) not null,
---academic_title bigint not null,
---education_title bigint not null,
---scientific_field bigint not null,
---constraint foreign key academic_title references academic_title(id),
---);
+CREATE TABLE IF NOT EXISTS MEMBER (
+id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+first_name VARCHAR(255),
+last_name VARCHAR(255),
+department_id BIGINT UNSIGNED NOT NULL,
+education_title_id BIGINT UNSIGNED NOT NULL,
+PRIMARY KEY (id, department_id)
+)

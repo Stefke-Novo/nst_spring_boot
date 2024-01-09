@@ -3,22 +3,25 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-<!--    &lt;!&ndash; kreiraj tabelu depratment&ndash;&gt;-->
+<!--   &lt;!&ndash; kreiraj tabelu depratment&ndash;&gt;-->
 <!--    <changeSet id="create-department" author="d.savic">-->
 <!--        <sqlFile path="ddl/create-department.sql" relativeToChangelogFile="true"/>-->
 <!--    </changeSet>-->
-<!--    &lt;!&ndash; kreiraj tabelu subject&ndash;&gt;-->
+<!--   &lt;!&ndash; kreiraj tabelu subject&ndash;&gt;-->
 <!--    <changeSet id="create-subject" author="d.savic">-->
 <!--        <sqlFile path="ddl/create-subject.sql" relativeToChangelogFile="true"/>-->
 <!--    </changeSet>-->
-
+<!--    -->
 <!--    &lt;!&ndash; popuni tabelu depratment&ndash;&gt;-->
 <!--    <changeSet id="init-department" author="d.savic">-->
 <!--        <sqlFile path="dml/init-department.sql" relativeToChangelogFile="true"/>-->
 <!--    </changeSet>-->
-
-
+<!--    -->
+<!--    -->
 <!--    <changeSet id="init-subject" author="d.savic">-->
 <!--        <sqlFile path="dml/init-subject.sql" relativeToChangelogFile="true"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet id="create-member" author="s.veljkovic">-->
+<!--        <sqlFile path="ddl/create-member.sql"/>-->
 <!--    </changeSet>-->
 </databaseChangeLog>

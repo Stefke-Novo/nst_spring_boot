@@ -4,27 +4,28 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "department")
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "bigint unsigned not null auto_increment",nullable = false)
-    private long Id;
+    @Column(columnDefinition = "bigint unsigned",updatable = false,insertable = false)
+    private Long id;
     @NotEmpty(message = "Ime je obaezno polje")
     @Size(min = 2, max = 10, message = "Broj znakova je od 2 do 10")
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "department")
-    private List<Member> memberList;
+    @OneToMany(mappedBy = "department", targetEntity = Member.class)
+    private Set<Member> memberList = new HashSet<>();
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL,targetEntity = Subject.class)
-    private List<Subject> subjects;
+    @OneToMany(mappedBy = "department",targetEntity = Subject.class)
+    private Set<Subject> subjects = new HashSet<>();
 
     public Department(long id, String name) {
-        Id = id;
+        this.id = id;
         this.name = name;
     }
 
@@ -32,11 +33,11 @@ public class Department {
     }
 
     public long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {

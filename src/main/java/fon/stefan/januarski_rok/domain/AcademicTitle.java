@@ -8,13 +8,14 @@ import java.util.List;
 @Table(name = "academic_title")
 public class AcademicTitle {
     @Id
-    @Column(columnDefinition = "bigint unsigned not null auto_increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "bigint unsigned")
     private long id;
 
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "academicTitle")
+    @OneToMany(mappedBy = "academicTitle",cascade = CascadeType.ALL,targetEntity = AcademicTitleHistory.class)
     private List<AcademicTitleHistory> memberList;
 
     public String getTitle() {

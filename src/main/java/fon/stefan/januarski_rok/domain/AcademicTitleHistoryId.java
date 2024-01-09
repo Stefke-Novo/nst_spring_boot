@@ -1,53 +1,21 @@
 package fon.stefan.januarski_rok.domain;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
 public class AcademicTitleHistoryId implements Serializable {
 
 
-
-    private long departmentId;
-
-
-    private long memberId;
-
-
-    private long scientificFieldId;
+    @ManyToOne(optional = false)
+    @JoinColumns({
+            @JoinColumn(name = "department_id", referencedColumnName = "department_id",columnDefinition = "bigint unsigned"),
+            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
+    })
+    private Member member;
 
 
-    private long academicTitleId;
-
-    public long getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(long departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public long getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(long memberId) {
-        this.memberId = memberId;
-    }
-
-    public long getScientificFieldId() {
-        return scientificFieldId;
-    }
-
-    public void setScientificFieldId(long scientificFieldId) {
-        this.scientificFieldId = scientificFieldId;
-    }
-
-    public long getAcademicTitleId() {
-        return academicTitleId;
-    }
-
-    public void setAcademicTitleId(long academicTitleId) {
-        this.academicTitleId = academicTitleId;
-    }
+    @ManyToOne
+    @JoinColumn(name = "academic_title_id",referencedColumnName = "id",columnDefinition = "undefined")
+    private AcademicTitle academicTitle;
 }

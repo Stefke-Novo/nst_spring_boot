@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 @Entity
-@Table(name = "academic_title_history",uniqueConstraints =
-        {@UniqueConstraint(columnNames = {"department_id","member_id"}),
-        @UniqueConstraint(columnNames = {"academic_title_id"}),
-        @UniqueConstraint(columnNames = {"scientific_field_id"})})
+@Table(name = "academic_title_history")
 @IdClass(AcademicTitleHistory.class)
 public class AcademicTitleHistory extends AcademicTitleHistoryId {
 
@@ -15,30 +12,19 @@ public class AcademicTitleHistory extends AcademicTitleHistoryId {
     @Id
     @ManyToOne(optional = false)
     @JoinColumns({
-            @JoinColumn(name = "department_id", referencedColumnName = "department_id",columnDefinition = "bigint unsigned not null"),
-            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned not null")
+            @JoinColumn(name = "department_id", referencedColumnName = "department_id",columnDefinition = "bigint unsigned"),
+            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
     })
     private Member member;
-    @Column(name = "department_id",columnDefinition = "bigint unsigned not null")
-    private long departmentId;
-
-    @Column(name = "member_id",columnDefinition = "bigint unsigned not null")
-    private long memberId;
 
     @Id
     @ManyToOne(optional = false)
-    @JoinColumn(name = "academic_title_id",columnDefinition = "bigint UNSIGNED NOT NULL",referencedColumnName = "id")
+    @JoinColumn(name = "academic_title_id",columnDefinition = "bigint unsigned",referencedColumnName = "id")
     private AcademicTitle academicTitle;
 
-    @Column(name = "academic_title_id",columnDefinition = "bigint UNSIGNED NOT NULL")
-    private long academicTitleId;
-
     @ManyToOne(optional = false)
-    @JoinColumn(name = "scientific_field_id",columnDefinition = "bigint UNSIGNED NOT NULL", referencedColumnName = "id")
+    @JoinColumn(name = "scientific_field_id",columnDefinition = "bigint unsigned", referencedColumnName = "id")
     private ScientificField scientificField;
-
-    @Column(name = "scientific_field_id")
-    private long scientificFieldId;
 
     @Basic
     @Temporal(TemporalType.DATE)
@@ -67,13 +53,6 @@ public class AcademicTitleHistory extends AcademicTitleHistoryId {
         this.academicTitle = academicTitle;
     }
 
-//    public long getAcademicTitleHistroyId() {
-//        return academicTitleHistroyId;
-//    }
-//
-//    public void setAcademicTitleHistroyId(long academicTitleHistroyId) {
-//        this.academicTitleHistroyId = academicTitleHistroyId;
-//    }
 
     public ScientificField getScientificField() {
         return scientificField;

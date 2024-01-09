@@ -5,12 +5,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.util.Arrays;
 
 @SpringBootApplication
 public class JanuarskiRokApplication {
 
+	@Bean(name="entityManagerFactory")
+	public LocalSessionFactoryBean sessionFactory() {
+        return new LocalSessionFactoryBean();
+	}
 	public static void main(String[] args) {
 		SpringApplication.run(JanuarskiRokApplication.class, args);
 	}

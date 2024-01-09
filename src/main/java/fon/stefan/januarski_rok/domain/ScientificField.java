@@ -11,13 +11,13 @@ import java.util.List;
 public class ScientificField {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "bigint unsigned not null auto_increment")
+    @Column(columnDefinition = "bigint unsigned")
     private long id;
     private String name;
 
     public ScientificField() {
     }
-    @OneToMany(mappedBy = "scientificField")
+    @OneToMany(mappedBy = "scientificField",cascade = CascadeType.ALL,targetEntity = AcademicTitleHistory.class)
     private List<AcademicTitleHistory> memberList;
     public ScientificField(long id, String name) {
         this.id = id;

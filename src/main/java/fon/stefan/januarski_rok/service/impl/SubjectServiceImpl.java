@@ -4,6 +4,7 @@ import fon.stefan.januarski_rok.converter.impl.DepartmentConverter;
 import fon.stefan.januarski_rok.converter.impl.SubjectConverter;
 import fon.stefan.januarski_rok.domain.Department;
 import fon.stefan.januarski_rok.domain.Subject;
+import fon.stefan.januarski_rok.domain.SubjectId;
 import fon.stefan.januarski_rok.dto.SubjectDto;
 import fon.stefan.januarski_rok.repository.DepartmentRepository;
 import fon.stefan.januarski_rok.repository.SubjectRepository;
@@ -62,7 +63,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public void delete(Long id) throws Exception {
-        Optional<Subject> subject = subjectRepository.findById(id);
+        Optional<Subject> subject = subjectRepository.findById(new SubjectId(id));
         if (subject.isPresent()) {
             Subject subj = subject.get();
             subjectRepository.delete(subj);
@@ -79,7 +80,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public SubjectDto findById(Long id) throws Exception {
-        Optional<Subject> subject = subjectRepository.findById(id);
+        Optional<Subject> subject = subjectRepository.findById(new SubjectId(id));
         if (subject.isPresent()) {
             //postoji
             Subject subj = subject.get();

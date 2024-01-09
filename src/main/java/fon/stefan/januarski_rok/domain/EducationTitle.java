@@ -2,6 +2,8 @@ package fon.stefan.januarski_rok.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -9,12 +11,12 @@ import java.util.List;
 public class EducationTitle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "bigint unsigned not null auto_increment",name = "id")
+    @Column(columnDefinition = "bigint unsigned")
     private long Id;
 
     private String title;
 
-    @OneToMany(mappedBy = "educationTitle")
+    @OneToMany(mappedBy = "educationTitle",cascade = CascadeType.ALL,targetEntity = Member.class)
     List<Member> members;
 
     public long getId() {

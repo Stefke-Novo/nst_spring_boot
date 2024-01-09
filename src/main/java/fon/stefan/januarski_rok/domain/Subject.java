@@ -8,11 +8,12 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "subject",uniqueConstraints = @UniqueConstraint(columnNames = {"department_id"}))
+@IdClass(SubjectId.class)
 public class Subject implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "bigint UNSIGNED NOT NULL auto_increment")
+    @Column(columnDefinition = "bigint unsigned")
     private Long id;
 
     @NotEmpty(message = "Ime je obavezno polje")
@@ -22,12 +23,10 @@ public class Subject implements Serializable {
     @Column(name = "espb")
     private int esbp;
 
+    @Id
     @ManyToOne(optional = false)
-    @JoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned not null",nullable = false)
+    @JoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
     private Department department;
-
-//    @Column(name = "department_id",columnDefinition = "UNSIGNED BIGINT",nullable = false)
-//    private long departmentId;
 
     public Subject() {
     }

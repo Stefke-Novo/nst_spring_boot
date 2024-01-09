@@ -2,27 +2,23 @@ package fon.stefan.januarski_rok.domain;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "department_secretary",uniqueConstraints = @UniqueConstraint(columnNames = {"department_id","member_id"}))
+@Entity(name = "DepartmentSecretary")
+@Table(name = "department_secretary")
 @IdClass(DepartmentSecretaryId.class)
 public class DepartmentSecretary {
-
     @Id
-    @Column(columnDefinition = "bigint unsigned not null auto_increment", name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "bigint unsigned")
     private long id;
 
+
+    @Id
     @ManyToOne(optional = false)
     @JoinColumns({
-            @JoinColumn(name = "department_id", referencedColumnName = "department_id",columnDefinition = "bigint unsigned not null"),
-            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned not null")
+            @JoinColumn(name = "department_id",referencedColumnName = "department_Id",columnDefinition = "bigint unsigned"),
+            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
     })
     private Member member;
-
-    @Column(name = "department_id",columnDefinition = "bigint unsigned not null")
-    private long departmentId;
-
-    @Column(name = "member_id",columnDefinition = "bigint unsigned not null")
-    private long memberId;
 
     public long getId() {
         return id;

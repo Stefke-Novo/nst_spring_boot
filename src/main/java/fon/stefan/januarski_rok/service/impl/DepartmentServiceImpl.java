@@ -2,14 +2,10 @@ package fon.stefan.januarski_rok.service.impl;
 
 import fon.stefan.januarski_rok.converter.impl.DepartmentConverter;
 import fon.stefan.januarski_rok.domain.Department;
-import fon.stefan.januarski_rok.domain.Member;
 import fon.stefan.januarski_rok.dto.DepartmentDto;
 import fon.stefan.januarski_rok.exception.DepartmentAlreadyExistException;
 import fon.stefan.januarski_rok.repository.DepartmentRepository;
 import fon.stefan.januarski_rok.service.DepartmentService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +18,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentConverter departmentConverter;
     private final DepartmentRepository departmentRepository;
-    @PersistenceContext
-    EntityManager entityManager;
+//    @PersistenceContext
+//    EntityManager entityManager;
 
     public DepartmentServiceImpl(
             DepartmentRepository departmentRepository,
@@ -77,15 +73,15 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
-    @Override
-    public DepartmentDto getDepartmentWithMembers(Long id) throws Exception {
-        Optional<Department> departmentObj = departmentRepository.findById(id);
-        if(departmentObj.isEmpty())
-            throw new Exception("Department with id = "+id+"not found.");
-        Department department = departmentObj.get();
-        List<Member> members = this.getCurrentMembers(id);
-        return new DepartmentDto(department.getId(),department.getName(),members);
-    }
+//    @Override
+//    public DepartmentDto getDepartmentWithMembers(Long id) throws Exception {
+//        Optional<Department> departmentObj = departmentRepository.findById(id);
+//        if(departmentObj.isEmpty())
+//            throw new Exception("Department with id = "+id+"not found.");
+//        Department department = departmentObj.get();
+//        List<Member> members = this.getCurrentMembers(id);
+//        return new DepartmentDto(department.getId(),department.getName(),members);
+//    }
 
     @Override
     public List<DepartmentDto> getAll(Pageable pageable) {
@@ -101,14 +97,14 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .stream().map(departmentConverter::toDto)
                 .collect(Collectors.toList());
     }
-    private List<Member> getCurrentMembers(long departmentId) {
-        TypedQuery<Member> query =entityManager
-                .createQuery(
-                        "select * member m " +
-                                "join entity_title_history on m.id=eth.member_id and m.department_id=eth.department_id " +
-                                "join academic_title at on ath.academic_title_id=at.id " +
-                                "where ath.end_date is null and department_id="+departmentId+";"
-                        ,Member.class);
-        return query.getResultList();
-    }
+//    private List<Member> getCurrentMembers(long departmentId) {
+//        TypedQuery<Member> query =entityManager
+//                .createQuery(
+//                        "select * member m " +
+//                                "join entity_title_history on m.id=eth.member_id and m.department_id=eth.department_id " +
+//                                "join academic_title at on ath.academic_title_id=at.id " +
+//                                "where ath.end_date is null and department_id="+departmentId+";"
+//                        ,Member.class);
+//        return query.getResultList();
+//    }
 }

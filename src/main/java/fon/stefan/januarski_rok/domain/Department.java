@@ -1,9 +1,9 @@
 package fon.stefan.januarski_rok.domain;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 

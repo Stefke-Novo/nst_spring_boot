@@ -1,7 +1,7 @@
 package fon.stefan.januarski_rok.domain;
 
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
 import java.util.Date;
 @Entity
 @Table(name = "academic_title_history")

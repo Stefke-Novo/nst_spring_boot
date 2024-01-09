@@ -1,11 +1,12 @@
 package fon.stefan.januarski_rok.domain;
 
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name ="member")
+@IdClass(MemberId.class)
 public class Member{
 
     @Id

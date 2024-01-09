@@ -1,9 +1,7 @@
 package fon.stefan.januarski_rok.domain;
 
-import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
@@ -12,7 +10,7 @@ public class EducationTitle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "bigint unsigned")
-    private long Id;
+    private long id;
 
     private String title;
 
@@ -20,11 +18,11 @@ public class EducationTitle {
     List<Member> members;
 
     public long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getTitle() {

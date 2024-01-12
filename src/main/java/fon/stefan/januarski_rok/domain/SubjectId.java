@@ -8,12 +8,13 @@ import java.util.Objects;
 public class SubjectId implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",columnDefinition = "bigint unsigned",nullable = false)
     private long id;
 
-    @ManyToOne(optional = false)
-    @PrimaryKeyJoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
-    private Department department;
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
+    private Department pdepartment;
 
     public SubjectId(long id){
         this.id=id;
@@ -28,11 +29,11 @@ public class SubjectId implements Serializable {
     }
 
     public Department getDepartment() {
-        return department;
+        return pdepartment;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartment(Department pdepartment) {
+        this.pdepartment = pdepartment;
     }
 
     public SubjectId() {
@@ -43,11 +44,11 @@ public class SubjectId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SubjectId subjectId = (SubjectId) o;
-        return id == subjectId.id && Objects.equals(department, subjectId.department);
+        return id == subjectId.id && Objects.equals(pdepartment, subjectId.pdepartment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, department);
+        return Objects.hash(id, pdepartment);
     }
 }

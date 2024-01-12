@@ -12,9 +12,9 @@ import java.io.Serializable;
 public class Subject implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "bigint unsigned")
-    private Long id;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",columnDefinition = "bigint unsigned")
+    private long id;
 
     @NotEmpty(message = "Ime je obavezno polje")
     @Size(min = 2, max = 10, message = "Broj znakova je od 2 do 10")
@@ -24,18 +24,18 @@ public class Subject implements Serializable {
     private int esbp;
 
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
-    private Department department;
+    private Department pdepartment;
 
     public Subject() {
     }
 
-    public Subject(Long id, String name, int esbp, Department department) {
+    public Subject(Long id, String name, int esbp, Department pdepartment) {
         this.id = id;
         this.name = name;
         this.esbp = esbp;
-        this.department = department;
+        this.pdepartment = pdepartment;
     }
 
     public Long getId() {
@@ -62,12 +62,12 @@ public class Subject implements Serializable {
         this.esbp = esbp;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Department getPdepartment() {
+        return pdepartment;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setPdepartment(Department pdepartment) {
+        this.pdepartment = pdepartment;
     }
 
 //    public long getDepartmentId() {

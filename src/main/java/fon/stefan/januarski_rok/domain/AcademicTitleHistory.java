@@ -1,34 +1,42 @@
 package fon.stefan.januarski_rok.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.annotations.Cascade;
+
 import java.util.Date;
 @Entity
 @Table(name = "academic_title_history")
-@IdClass(AcademicTitleHistory.class)
-public class AcademicTitleHistory extends AcademicTitleHistoryId {
-
+@IdClass(AcademicTitleHistoryId.class)
+public class AcademicTitleHistory{
 
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade = CascadeType.ALL,targetEntity = Member.class,fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumns({
-            @JoinColumn(name = "department_id", referencedColumnName = "department_id",columnDefinition = "bigint unsigned"),
-            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
+            @JoinColumn(name = "department_id", referencedColumnName = "department_id",columnDefinition = "bigint unsigned",nullable = false),
+            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned",nullable = false)
     })
+    @NotEmpty(message = "Entity must have Entity Member.")
     private Member member;
 
     @Id
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "academic_title_id",columnDefinition = "bigint unsigned",referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonBackReference
+    @JoinColumn(name = "academic_title_id",columnDefinition = "bigint unsigned",referencedColumnName = "id", nullable = false)
     private AcademicTitle academicTitle;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "scientific_field_id",columnDefinition = "bigint unsigned", referencedColumnName = "id")
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonBackReference
+    @JoinColumn(name = "scientific_field_id",columnDefinition = "bigint unsigned", referencedColumnName = "id", nullable = false)
     private ScientificField scientificField;
 
     @Basic
     @Temporal(TemporalType.DATE)
-    @Column(name = "start_date")
+    @Column(name = "start_date",nullable = false)
     private Date startDate;
 
     @Basic
@@ -36,6 +44,22 @@ public class AcademicTitleHistory extends AcademicTitleHistoryId {
     @Column(name = "end_date", nullable = true)
     private Date endDate;
 
+    public AcademicTitleHistory(){
+
+    }
+    public AcademicTitleHistory(long departmentId, long memberId,String academicTitle, String scientificField){
+        //this.academicTitleHistoryId = new AcademicTitleHistoryId();
+        this.member = new Member(departmentId,memberId);
+        this.academicTitle =new AcademicTitle(academicTitle, this);
+        this.scientificField = new ScientificField(scientificField);
+    }
+    public AcademicTitleHistory(Member member,String academicTitle, String scientificField){
+        //this.academicTitleHistoryId = new AcademicTitleHistoryId();
+        this.member = member;
+        this.academicTitle =new AcademicTitle(academicTitle, this);
+        this.scientificField = new ScientificField(scientificField);
+        this.setStartDate(new Date());
+    }
 
     public Member getMember() {
         return member;

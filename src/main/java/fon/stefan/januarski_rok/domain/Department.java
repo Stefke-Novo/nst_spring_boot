@@ -1,15 +1,17 @@
 package fon.stefan.januarski_rok.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "department")
-public class Department {
+public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "bigint unsigned",updatable = false,insertable = false)
@@ -18,14 +20,20 @@ public class Department {
     @Size(min = 2, max = 10, message = "Broj znakova je od 2 do 10")
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "department", targetEntity = Member.class)
-    private Set<Member> memberList = new HashSet<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pdepartment", cascade = CascadeType.ALL, targetEntity = Member.class, fetch = FetchType.LAZY,orphanRemoval = true)
+    private List<Member> memberList;
 
-    @OneToMany(mappedBy = "department",targetEntity = Subject.class)
-    private Set<Subject> subjects = new HashSet<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pdepartment",cascade = CascadeType.ALL,targetEntity = Subject.class,fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Subject> subjects;
+
+    public  Department(long id){
+        this.id=id;
+    }
 
     public Department(long id, String name) {
-        this.id = id;
+        this(id);
         this.name = name;
     }
 
@@ -46,5 +54,35 @@ public class Department {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Member> getMemberList() {
+        return memberList;
+    }
+
+    public void setMemberList(List<Member> memberList) {
+        this.memberList = memberList;
+        this.memberList.forEach(member->member.setDepartment(this));
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+        this.subjects.forEach(subject->subject.setPdepartment(this));
+    }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\''+
+                '}';
     }
 }

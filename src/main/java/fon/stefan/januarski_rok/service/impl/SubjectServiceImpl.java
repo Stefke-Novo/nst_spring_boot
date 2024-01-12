@@ -40,12 +40,12 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectDto save(SubjectDto subjectDto) throws Exception {
         //sacuvaj subject
         Subject subject = subjectConverter.toEntity(subjectDto);
-        if(subject.getDepartment().getId()==0){
-            departmentRepository.save(subject.getDepartment());
+        if(subject.getPdepartment().getId()==0){
+            departmentRepository.save(subject.getPdepartment());
         }else{
-            Optional<Department> dep = departmentRepository.findById(subject.getDepartment().getId());
+            Optional<Department> dep = departmentRepository.findById(subject.getPdepartment().getId());
             if(dep.isEmpty()){
-                departmentRepository.save(subject.getDepartment());
+                departmentRepository.save(subject.getPdepartment());
             }
         }
         subjectRepository.save(subject);

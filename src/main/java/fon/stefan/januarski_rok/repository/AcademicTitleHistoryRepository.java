@@ -1,5 +1,6 @@
 package fon.stefan.januarski_rok.repository;
 
+import fon.stefan.januarski_rok.domain.AcademicTitle;
 import fon.stefan.januarski_rok.domain.AcademicTitleHistory;
 import fon.stefan.januarski_rok.domain.AcademicTitleHistoryId;
 import fon.stefan.januarski_rok.domain.Member;

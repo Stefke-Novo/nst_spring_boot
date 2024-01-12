@@ -1,5 +1,6 @@
 package fon.stefan.januarski_rok.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity(name = "DepartmentSecretary")
@@ -7,15 +8,16 @@ import jakarta.persistence.*;
 @IdClass(DepartmentSecretaryId.class)
 public class DepartmentSecretary {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "bigint unsigned")
     private long id;
 
 
+    @JsonBackReference
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumns({
-            @JoinColumn(name = "department_id",referencedColumnName = "department_Id",columnDefinition = "bigint unsigned"),
+            @JoinColumn(name = "department_id",referencedColumnName = "department_id",columnDefinition = "bigint unsigned"),
             @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
     })
     private Member member;

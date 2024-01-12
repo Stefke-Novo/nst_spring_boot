@@ -16,36 +16,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<MyErrorDetails> handleException(Exception e) {
-        System.out.println("nst.springboot.restexample01.controller.DepartmentController.handleException()");
-        System.out.println("-----------pozvana metoda za obradu izuzetka u kontroleru -------------");
-
-        MyErrorDetails myErrorDetails = new MyErrorDetails(e.getMessage());
-
-        return new ResponseEntity<>(myErrorDetails, HttpStatus.NOT_FOUND);
-
-    }
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
-        Map<String, String> errors = new HashMap<>();
-
-        //pokupi sve greske koje su nastale pri validaciji vrednosti nad objektoma
-        List<ObjectError> objectErrors = ex.getBindingResult().getAllErrors();
-        for (ObjectError error : objectErrors) {
-            String fieldName = ((FieldError)error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(fieldName, message);
-        }
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
-
-
-
-}
+//@ControllerAdvice
+//public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+//
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<MyErrorDetails> handleException(Exception e) {
+//        System.out.println("nst.springboot.restexample01.controller.DepartmentController.handleException()");
+//        System.out.println("-----------pozvana metoda za obradu izuzetka u kontroleru -------------");
+//
+//        MyErrorDetails myErrorDetails = new MyErrorDetails(e.getMessage());
+//
+//        return new ResponseEntity<>(myErrorDetails, HttpStatus.NOT_FOUND);
+//
+//    }
+//
+//    @Override
+//    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+//                                                                  HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+//
+//        Map<String, String> errors = new HashMap<>();
+//
+//        //pokupi sve greske koje su nastale pri validaciji vrednosti nad objektoma
+//        List<ObjectError> objectErrors = ex.getBindingResult().getAllErrors();
+//        for (ObjectError error : objectErrors) {
+//            String fieldName = ((FieldError)error).getField();
+//            String message = error.getDefaultMessage();
+//            errors.put(fieldName, message);
+//        }
+//        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+//    }
+//
+//
+//
+//}

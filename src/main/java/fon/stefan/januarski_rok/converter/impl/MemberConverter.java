@@ -7,11 +7,11 @@ import fon.stefan.januarski_rok.dto.MemberDto;
 public class MemberConverter implements DtoEntityConverter<MemberDto, Member> {
     @Override
     public MemberDto toDto(Member member) {
-        return new MemberDto(member.getFirstName(),member.getLastName(),member.getAcademicTitles().getLast().getAcademicTitle().getTitle(),member.getEducationTitle().getTitle(),member.getAcademicTitles().getLast().getScientificField().getName());
+        return new MemberDto(member);
     }
 
     @Override
     public Member toEntity(MemberDto memberDto) {
-        return new Member(0,memberDto.getFirstName(),memberDto.getLastName());
+        return new Member();
     }
 }

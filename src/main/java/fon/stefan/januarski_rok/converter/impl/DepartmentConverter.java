@@ -7,7 +7,7 @@ import fon.stefan.januarski_rok.dto.DepartmentDto;
 public class DepartmentConverter implements DtoEntityConverter<DepartmentDto,Department> {
     @Override
     public DepartmentDto toDto(Department entity) {
-        return new DepartmentDto(entity.getId(), entity.getName());
+        return new DepartmentDto(entity);
     }
 
     @Override

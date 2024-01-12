@@ -1,13 +1,13 @@
 package fon.stefan.januarski_rok.dto;
 
+import fon.stefan.januarski_rok.converter.impl.MemberConverter;
+import fon.stefan.januarski_rok.domain.Department;
 import fon.stefan.januarski_rok.domain.Member;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import javax.swing.text.html.Option;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 public class DepartmentDto implements Serializable {
     private long id;
@@ -16,7 +16,7 @@ public class DepartmentDto implements Serializable {
     @Size(min = 2,max = 10, message = "Broj znakova [2-10]")
     private String name;
 
-    private List<Member> members;
+    private List<MemberDto> members;
     public DepartmentDto(){
     }
 
@@ -24,9 +24,15 @@ public class DepartmentDto implements Serializable {
         this.id=id;
         this.name=name;
     }
-    public DepartmentDto(long id, String name, List<Member> members){
+    public DepartmentDto(long id, String name, List<MemberDto> members){
         this(id,name);
         this.members =members;
+    }
+
+    public DepartmentDto(Department department){
+        this.id = department.getId();
+        this.name = department.getName();
+        this.members = department.getMemberList().stream().map(member -> new MemberConverter().toDto(member)).toList();
     }
 
     public long getId() {
@@ -45,11 +51,11 @@ public class DepartmentDto implements Serializable {
         this.name = name;
     }
 
-    public List<Member> getMembers() {
+    public List<MemberDto> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
+    public void setMembers(List<MemberDto> members) {
         this.members = members;
     }
 }

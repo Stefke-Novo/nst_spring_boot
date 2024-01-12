@@ -17,6 +17,12 @@ public class EducationTitle {
     @OneToMany(mappedBy = "educationTitle",cascade = CascadeType.ALL,targetEntity = Member.class)
     List<Member> members;
 
+    public EducationTitle(){
+
+    }
+    public EducationTitle(String title){
+        this.title = title;
+    }
     public long getId() {
         return id;
     }
@@ -39,5 +45,10 @@ public class EducationTitle {
 
     public void setMembers(List<Member> members) {
         this.members = members;
+    }
+
+    @Override
+    public String toString() {
+        return title;
     }
 }

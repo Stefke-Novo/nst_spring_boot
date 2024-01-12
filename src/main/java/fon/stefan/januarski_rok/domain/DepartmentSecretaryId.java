@@ -8,10 +8,10 @@ import java.util.Objects;
 public class DepartmentSecretaryId implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "bigint unsigned")
     private long id;
-    @ManyToOne
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumns({
             @JoinColumn(name = "department_id",referencedColumnName = "department_id",columnDefinition = "bigint unsigned"),
             @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")

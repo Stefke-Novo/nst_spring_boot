@@ -14,7 +14,7 @@ public class SubjectConverter implements DtoEntityConverter<SubjectDto, Subject>
         return new SubjectDto(
                 entity.getId(),
                 entity.getName(), entity.getEsbp(),
-                departmentConverter.toDto(entity.getDepartment())
+                departmentConverter.toDto(entity.getPdepartment())
         );
     }
 

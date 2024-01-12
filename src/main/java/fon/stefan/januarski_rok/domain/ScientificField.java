@@ -1,7 +1,9 @@
 package fon.stefan.januarski_rok.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +19,11 @@ public class ScientificField {
 
     public ScientificField() {
     }
-    @OneToMany(mappedBy = "scientificField",cascade = CascadeType.ALL,targetEntity = AcademicTitleHistory.class)
+    public ScientificField(String name){
+        this.name = name;
+    }
+    @JsonBackReference
+    @OneToMany(mappedBy = "scientificField",cascade = CascadeType.ALL,targetEntity = AcademicTitleHistory.class,fetch = FetchType.LAZY,orphanRemoval = true)
     private List<AcademicTitleHistory> memberList;
     public ScientificField(long id, String name) {
         this.id = id;
@@ -47,5 +53,10 @@ public class ScientificField {
 
     public void setMemberList(List<AcademicTitleHistory> memberList) {
         this.memberList = memberList;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -14,11 +14,13 @@ public class MemberDto implements Serializable {
     private String firstName;
     @JsonProperty(value = "last_name", required = true)
     private String lastName;
+    @JsonProperty(value = "academic_title")
     private String academicTitle;
 
     @JsonProperty(value = "education_title", required = true)
     private String educationTitle;
 
+    @JsonProperty(value = "scientific_field")
     private String scientificField;
 
     public MemberDto() {
@@ -136,4 +138,6 @@ public class MemberDto implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
+
+
 }

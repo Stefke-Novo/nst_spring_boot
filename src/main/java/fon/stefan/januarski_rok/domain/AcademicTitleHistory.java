@@ -47,7 +47,16 @@ public class AcademicTitleHistory{
     public AcademicTitleHistory(){
 
     }
-    public AcademicTitleHistory(long departmentId, long memberId,String academicTitle, String scientificField){
+
+    public AcademicTitleHistory(Member member, AcademicTitle academicTitle, ScientificField scientificField, Date startDate, Date endDate) {
+        this.member = member;
+        this.academicTitle = academicTitle;
+        this.scientificField = scientificField;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public AcademicTitleHistory(long departmentId, long memberId, String academicTitle, String scientificField){
         this.member = new Member(departmentId,memberId);
         this.academicTitle =new AcademicTitle(academicTitle, this);
         this.scientificField = new ScientificField(scientificField);

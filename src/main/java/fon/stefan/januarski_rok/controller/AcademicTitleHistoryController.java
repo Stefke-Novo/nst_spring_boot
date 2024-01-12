@@ -25,16 +25,16 @@ public class AcademicTitleHistoryController {
         return new ResponseEntity<>(academicTitleHistoryService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/history/get")
-    public ResponseEntity<List<AcademicTitleHistoryDto>> getAcademicTitleHistory(MemberDto memberDto) throws Exception {
+    @PostMapping(path = "/history/get")
+    public ResponseEntity<List<AcademicTitleHistoryDto>> getAcademicTitleHistory(@RequestBody MemberDto memberDto) throws Exception {
         return ResponseEntity.ok(academicTitleHistoryService.getHistory(memberDto));
     }
     @PostMapping(path = "/history/add")
-    public ResponseEntity<List<AcademicTitleHistoryDto>> addAcademicTitleHistory(MemberDto memberDto) throws Exception {
-        return ResponseEntity.ok(academicTitleHistoryService.addHistory(memberDto));
+    public ResponseEntity<List<AcademicTitleHistoryDto>> addAcademicTitleHistory(@RequestBody List<AcademicTitleHistoryDto> academicTitleHistoryDto) throws Exception {
+        return ResponseEntity.ok(academicTitleHistoryService.addHistory(academicTitleHistoryDto));
     }
     @PostMapping(path = "/add")
-    public ResponseEntity<List<AcademicTitleHistoryDto>> addAcademicTitle(AcademicTitleHistoryDto academicTitleHistoryDto) throws Exception {
+    public ResponseEntity<List<AcademicTitleHistoryDto>> addAcademicTitle(@RequestBody AcademicTitleHistoryDto academicTitleHistoryDto) throws Exception {
         return ResponseEntity.ok(academicTitleHistoryService.addAcademicTitle(academicTitleHistoryDto));
     }
 }

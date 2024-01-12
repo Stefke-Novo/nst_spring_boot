@@ -2,23 +2,27 @@ package fon.stefan.januarski_rok.service.impl;
 
 import fon.stefan.januarski_rok.domain.*;
 import fon.stefan.januarski_rok.dto.*;
-import fon.stefan.januarski_rok.repository.AcademicTitleHistoryRepository;
-import fon.stefan.januarski_rok.repository.EducationTitleRepository;
-import fon.stefan.januarski_rok.repository.MemberRepository;
+import fon.stefan.januarski_rok.repository.*;
 import fon.stefan.januarski_rok.service.AcademicTitleHistoryService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AcademicTitleHistoryServiceImpl implements AcademicTitleHistoryService {
 
     private final AcademicTitleHistoryRepository academicTitleHistoryRepository;
     private final MemberRepository memberRepository;
-    private final EducationTitleRepository educationTitleRepository;
-    public AcademicTitleHistoryServiceImpl(AcademicTitleHistoryRepository academicTitleHistoryRepository,MemberRepository memberRepository, EducationTitleRepository educationTitleRepository){
+    private final ScientificFieldRepository scientificFieldRepository;
+    private final DepartmentRepository departmentRepository;
+    private final AcademicTitleRepository academicTitleRepository;
+    public AcademicTitleHistoryServiceImpl(AcademicTitleHistoryRepository academicTitleHistoryRepository,MemberRepository memberRepository, ScientificFieldRepository scientificFieldRepository, DepartmentRepository departmentRepository, AcademicTitleRepository academicTitleRepository){
         this.memberRepository=memberRepository;
         this.academicTitleHistoryRepository = academicTitleHistoryRepository;
-        this.educationTitleRepository = educationTitleRepository;
+        this.departmentRepository=departmentRepository;
+        this.academicTitleRepository=academicTitleRepository;
+        this.scientificFieldRepository=scientificFieldRepository;
     }
     @Override
     public List<AcademicTitleHistoryDto> getHistory(MemberDto memberDto) throws Exception {
@@ -52,8 +56,8 @@ public class AcademicTitleHistoryServiceImpl implements AcademicTitleHistoryServ
                         a.getScientificField().getId(),
                         a.getScientificField().getName()
                 ),
-                a.getStartDate(),
-                a.getEndDate()
+                AcademicTitleHistoryDto.toString(a.getStartDate()),
+                AcademicTitleHistoryDto.toString(a.getEndDate())
         );
     }
 
@@ -71,7 +75,8 @@ public class AcademicTitleHistoryServiceImpl implements AcademicTitleHistoryServ
     }
 
     @Override
-    public List<AcademicTitleHistoryDto> addHistory(MemberDto memberDto) throws Exception {
+    public List<AcademicTitleHistoryDto> addHistory(List<AcademicTitleHistoryDto> history) throws Exception {
+        MemberDto memberDto = history.getFirst().getMemberDto();
         Member member = checkMember(memberDto);
         academicTitleHistoryRepository.saveAll(member.getAcademicTitles());
         Optional<List<AcademicTitleHistory>> list = academicTitleHistoryRepository.findByDepartmentIdAndMemberId(memberDto.getDepartmentId(),memberDto.getId());
@@ -83,7 +88,28 @@ public class AcademicTitleHistoryServiceImpl implements AcademicTitleHistoryServ
 
     @Override
     public List<AcademicTitleHistoryDto> addAcademicTitle(AcademicTitleHistoryDto academicTitleHistoryDto) throws Exception {
-        AcademicTitleHistory academicTitleHistory = new AcademicTitleHistory();
+        Optional<Department> department = departmentRepository.findById(academicTitleHistoryDto.getDepartmentDto().getId());
+        if(department.isEmpty())
+            throw new RuntimeException("Department with id "+academicTitleHistoryDto.getDepartmentDto().getId()+" doesn't exist");
+        Optional<Member> member = memberRepository.findById(new MemberId(academicTitleHistoryDto.getMemberDto().getId(),department.get()));
+        if(member.isEmpty())
+            throw new RuntimeException("Member with id "+academicTitleHistoryDto.getMemberDto().getId()+" in department with id "+academicTitleHistoryDto.getDepartmentDto().getId()+" doesn't exist");
+        Optional<AcademicTitle> academicTitle = academicTitleRepository.findById(academicTitleHistoryDto.getAcademicTitleDto().getId());
+        if(academicTitle.isEmpty())
+            throw new RuntimeException("Academic title with id "+academicTitleHistoryDto.getAcademicTitleDto().getId()+" doesn't exist.");
+        Optional<ScientificField> scientificField = scientificFieldRepository.findById(academicTitleHistoryDto.getScientificFieldDto().getId());
+        if(scientificField.isEmpty())
+            throw new Exception("Scientific field with id "+academicTitleHistoryDto.getScientificFieldDto().getId()+" doesn't exist.");
+
+        AcademicTitleHistory academicTitleHistory = new AcademicTitleHistory(
+                member.get(),
+                academicTitle.get(),
+                scientificField.get(),
+                AcademicTitleHistoryDto.toDate(academicTitleHistoryDto.getStartDate()),
+                AcademicTitleHistoryDto.toDate(academicTitleHistoryDto.getEndDate())
+        );
+        if(academicTitleHistoryRepository.existsById(new AcademicTitleHistoryId(academicTitleHistory.getMember(),academicTitleHistory.getAcademicTitle())))
+            throw new RuntimeException("Entity is already created.");
         academicTitleHistoryRepository.save(academicTitleHistory);
         Optional<List<AcademicTitleHistory>> list = academicTitleHistoryRepository.findByDepartmentIdAndMemberId(academicTitleHistoryDto.getDepartmentDto().getId(),academicTitleHistoryDto.getMemberDto().getId());
         if(list.isEmpty())

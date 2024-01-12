@@ -2,6 +2,9 @@ package fon.stefan.januarski_rok.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AcademicTitleHistoryDto {
@@ -14,14 +17,14 @@ public class AcademicTitleHistoryDto {
     @JsonProperty(value = "scientific_field")
     private ScientificFieldDto scientificFieldDto;
     @JsonProperty(value = "start_date")
-    private Date startDate;
+    private String startDate;
     @JsonProperty(value = "end_date")
-    private Date endDate;
+    private String endDate;
 
     public AcademicTitleHistoryDto() {
     }
 
-    public AcademicTitleHistoryDto(MemberDto memberDto, DepartmentDto departmentDto, AcademicTitleDto academicTitleDto, ScientificFieldDto scientificFieldDto, Date startDate, Date endDate) {
+    public AcademicTitleHistoryDto(MemberDto memberDto, DepartmentDto departmentDto, AcademicTitleDto academicTitleDto, ScientificFieldDto scientificFieldDto, String startDate, String endDate) {
         this.memberDto = memberDto;
         this.departmentDto = departmentDto;
         this.academicTitleDto = academicTitleDto;
@@ -62,19 +65,27 @@ public class AcademicTitleHistoryDto {
         this.scientificFieldDto = scientificFieldDto;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+    public static Date toDate(String date) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.parse(date);
+    }
+    public static String toString(Date date){
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(date);
     }
 }

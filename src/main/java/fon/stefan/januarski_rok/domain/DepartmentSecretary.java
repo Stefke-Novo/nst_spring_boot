@@ -22,6 +22,11 @@ public class DepartmentSecretary {
     })
     private Member member;
 
+    public DepartmentSecretary(long id, long id1, long memberId) {
+        this.id=id;
+        this.member = new Member(memberId,id1);
+    }
+
     public long getId() {
         return id;
     }

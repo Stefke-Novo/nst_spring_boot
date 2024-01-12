@@ -29,6 +29,11 @@ public class DepartmentSecretaryId implements Serializable {
         return id == that.id && Objects.equals(member, that.member);
     }
 
+    public DepartmentSecretaryId(long id, Member member) {
+        this.id = id;
+        this.member = member;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, member);

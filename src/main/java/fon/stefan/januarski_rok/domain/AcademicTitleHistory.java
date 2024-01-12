@@ -48,13 +48,11 @@ public class AcademicTitleHistory{
 
     }
     public AcademicTitleHistory(long departmentId, long memberId,String academicTitle, String scientificField){
-        //this.academicTitleHistoryId = new AcademicTitleHistoryId();
         this.member = new Member(departmentId,memberId);
         this.academicTitle =new AcademicTitle(academicTitle, this);
         this.scientificField = new ScientificField(scientificField);
     }
     public AcademicTitleHistory(Member member,String academicTitle, String scientificField){
-        //this.academicTitleHistoryId = new AcademicTitleHistoryId();
         this.member = member;
         this.academicTitle =new AcademicTitle(academicTitle, this);
         this.scientificField = new ScientificField(scientificField);

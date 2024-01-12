@@ -57,6 +57,16 @@ public class MemberDto implements Serializable {
         this.educationTitle=educationTitle.getTitle();
     }
 
+    public MemberDto(long id, long id1, String firstName, String lastName, String title, String title1, String name) {
+        this.id=id;
+        this.departmentId=id1;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.educationTitle=title;
+        this.academicTitle=title1;
+        this.scientificField=name;
+    }
+
     public String getFirstName() {
         return firstName;
     }

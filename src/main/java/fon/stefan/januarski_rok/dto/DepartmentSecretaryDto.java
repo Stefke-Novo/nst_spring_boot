@@ -18,6 +18,15 @@ public class DepartmentSecretaryDto implements Serializable {
     @JsonProperty(value = "education_title")
     private String educationTitle;
 
+    public DepartmentSecretaryDto(DepartmentDto departmentDto, long id, long id1, String firstName, String lastName, String title) {
+        this.departmentDto=departmentDto;
+        this.memberId=id;
+        this.id=id1;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.educationTitle=title;
+    }
+
     public DepartmentDto getDepartmentDto() {
         return departmentDto;
     }

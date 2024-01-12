@@ -22,7 +22,10 @@ public class HeadOfDepartment {
     })
     private Member member;
 
-
+    public HeadOfDepartment(long id, Member member) {
+        this.id = id;
+        this.member = member;
+    }
 
     public Member getMember() {
         return member;

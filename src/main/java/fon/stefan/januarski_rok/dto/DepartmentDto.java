@@ -35,6 +35,8 @@ public class DepartmentDto implements Serializable {
         this.members = department.getMemberList().stream().map(member -> new MemberConverter().toDto(member)).toList();
     }
 
+
+
     public long getId() {
         return id;
     }

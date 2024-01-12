@@ -46,10 +46,12 @@ public class DepartmentSecretaryServiceImpl implements DepartmentSecretaryServic
     public DepartmentSecretaryDto currentDepartmentSecretary(DepartmentDto departmentDto) throws Exception {
         Optional<List<DepartmentSecretary>> departmentSecretaryList = getDepartmentSecretariesByDepartment(departmentDto);
         if(departmentSecretaryList.isEmpty())
-            throw new RuntimeException("Department doesn't have secretary");
+            throw new RuntimeException("Department doesn't have secretary list");
+        if(departmentSecretaryList.get().isEmpty())
+            throw new RuntimeException("Department secretary list is empty");
         DepartmentSecretary current = departmentSecretaryList.get().getLast();
         Department department = current.getMember().getDepartment();
-        return new DepartmentSecretaryDto(new DepartmentDto(department.getId(),department.getName()),current.getMember().getId(),current.getMember().getFirstName(),current.getMember().getLastName(),current.getMember().getEducationTitle().getTitle());
+        return new DepartmentSecretaryDto(new DepartmentDto(department.getId(),department.getName()),current.getMember().getId(),current.getId(),current.getMember().getFirstName(),current.getMember().getLastName(),current.getMember().getEducationTitle().getTitle());
     }
 
     private Optional<List<DepartmentSecretary>> getDepartmentSecretariesByDepartment(DepartmentDto departmentDto) {
@@ -67,12 +69,14 @@ public class DepartmentSecretaryServiceImpl implements DepartmentSecretaryServic
     public List<DepartmentSecretaryDto> getDepartmentSecretaryHistory(DepartmentDto departmentDto) throws Exception {
         Optional<List<DepartmentSecretary>> departmentSecretarySearch = getDepartmentSecretariesByDepartment(departmentDto);
         if(departmentSecretarySearch.isEmpty())
-            throw new RuntimeException("Department secretary list doesn't exist");
+            throw new RuntimeException("Department secretary list doesn't exist.");
+        if(departmentSecretarySearch.get().isEmpty())
+            throw new RuntimeException("Department secretary list is empty.");
         return departmentSecretarySearch.get().stream().map(d->new DepartmentSecretaryDto(new DepartmentDto(d.getMember().getDepartment().getId(),d.getMember().getDepartment().getName()),d.getMember().getId(),d.getMember().getFirstName(),d.getMember().getLastName(),d.getMember().getEducationTitle().getTitle())).toList();
     }
 
     @Override
-    public DepartmentSecretaryDto createDepartemntSecretary(DepartmentSecretaryDto departmentSecretaryDto) throws Exception {
+    public DepartmentSecretaryDto createDepartmentSecretary(DepartmentSecretaryDto departmentSecretaryDto) throws Exception {
         Optional<DepartmentSecretary> departmentSecretarySearch = departmentSecretaryRepository.findById(new DepartmentSecretaryId(departmentSecretaryDto.getMemberId(),new Member(departmentSecretaryDto.getDepartmentDto().getId(),departmentSecretaryDto.getMemberId())));
         if(departmentSecretarySearch.isPresent())
             throw new RuntimeException("Department secretary already exist.");

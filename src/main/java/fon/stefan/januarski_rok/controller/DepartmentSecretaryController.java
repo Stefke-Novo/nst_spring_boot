@@ -22,21 +22,21 @@ public class DepartmentSecretaryController {
     public ResponseEntity<List<DepartmentSecretaryDto>> getAllDepartmentSecretaries(){
         return new ResponseEntity<>(departmentSecretaryService.getAllDepartmentSecretaries(), HttpStatus.OK);
     }
-    @PostMapping(path = "/delete")
+    @DeleteMapping(path = "/delete")
     public ResponseEntity<DepartmentSecretaryDto> deleteDepartmentSecretary(@RequestBody DepartmentSecretaryDto departmentSecretaryDto) throws Exception {
         return new ResponseEntity<>(departmentSecretaryService.deleteDepartmentSecretary(departmentSecretaryDto),HttpStatus.OK);
     }
-    @PostMapping(path = "/current")
+    @GetMapping(path = "/current")
     public ResponseEntity<DepartmentSecretaryDto> getCurrentDepartmentSecretary(@RequestBody DepartmentDto departmentDto) throws Exception {
         return new ResponseEntity<>(departmentSecretaryService.currentDepartmentSecretary(departmentDto),HttpStatus.OK);
     }
-    @PostMapping(path = "/history")
+    @GetMapping(path = "/history")
     public ResponseEntity<List<DepartmentSecretaryDto>> getDepartmentSecretaryHistoryByDepartment(@RequestBody DepartmentDto departmentDto) throws Exception {
         return new ResponseEntity<>(departmentSecretaryService.getDepartmentSecretaryHistory(departmentDto), HttpStatus.OK);
     }
     @PostMapping(path = "/create")
     public ResponseEntity<DepartmentSecretaryDto> createDepartmentSecretary(@RequestBody DepartmentSecretaryDto departmentSecretaryDto) throws Exception {
-        return new ResponseEntity<>(departmentSecretaryService.createDepartemntSecretary(departmentSecretaryDto),HttpStatus.OK);
+        return new ResponseEntity<>(departmentSecretaryService.createDepartmentSecretary(departmentSecretaryDto),HttpStatus.OK);
     }
 
 }

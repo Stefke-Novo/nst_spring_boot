@@ -35,7 +35,7 @@ public class MemberController {
     public ResponseEntity<MemberDto> updateMember(@RequestBody MemberDto member) throws Exception {
         return new ResponseEntity<>(memberService.updateMember(member), HttpStatus.OK);
     }
-    @PostMapping(path = "/delete")
+    @DeleteMapping(path = "/delete")
     public ResponseEntity<MemberDto> deleteMember(@RequestBody MemberDto member) throws Exception{
         return new ResponseEntity<>(memberService.deleteMember(member),HttpStatus.OK);
     }

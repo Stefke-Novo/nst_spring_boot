@@ -107,7 +107,7 @@ public class DepartmentController {
         System.out.println("nst.springboot.restexample01.controller.DepartmentController.handleException()");
         System.out.println("-----------pozvana metoda za obradu izuzetka u kontroleru -------------");
 
-        MyErrorDetails myErrorDetails = new MyErrorDetails(e.getMessage());
+        MyErrorDetails myErrorDetails = new MyErrorDetails(e.getMessage(),HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(myErrorDetails, HttpStatus.BAD_REQUEST);
 

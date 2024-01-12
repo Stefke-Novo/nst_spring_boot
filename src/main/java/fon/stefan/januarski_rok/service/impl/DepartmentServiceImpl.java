@@ -63,7 +63,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void update(DepartmentDto department) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Optional<Department> departmentSearch = departmentRepository.findById(department.getId());
+        if(departmentSearch.isEmpty())
+            throw new RuntimeException("Department with id "+department.getId()+" doesn't exist");
+        departmentRepository.save(departmentSearch.get());
     }
 
     @Override

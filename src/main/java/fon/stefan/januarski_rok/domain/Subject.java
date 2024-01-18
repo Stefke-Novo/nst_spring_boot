@@ -32,7 +32,7 @@ public class Subject implements Serializable {
     private int espb;
 
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
+    @JoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned",nullable = false)
     private Department department;
 
     public Subject(SubjectDto dto) {

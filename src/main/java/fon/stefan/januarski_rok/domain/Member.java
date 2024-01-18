@@ -43,7 +43,7 @@ public class Member{
     @JsonBackReference
     @ManyToOne(optional = false,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "education_title_id",referencedColumnName = "id",
-            columnDefinition = "bigint unsigned")
+            columnDefinition = "bigint unsigned",nullable = false)
     private EducationTitle educationTitle;
 
     @JsonManagedReference

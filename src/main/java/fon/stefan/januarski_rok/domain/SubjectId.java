@@ -1,14 +1,13 @@
 package fon.stefan.januarski_rok.domain;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.util.Objects;
 
 public class SubjectId implements Serializable {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",columnDefinition = "bigint unsigned",nullable = false)
     private long id;
 

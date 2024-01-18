@@ -1,5 +1,6 @@
 package fon.stefan.januarski_rok.service.impl;
 
+import fon.stefan.januarski_rok.converter.impl.HeadOfDepartmentConverter;
 import fon.stefan.januarski_rok.domain.Department;
 import fon.stefan.januarski_rok.domain.HeadOfDepartment;
 import fon.stefan.januarski_rok.domain.Member;
@@ -32,15 +33,14 @@ public class HeadOfDepartmentServiceImpl implements HeadOfDepartmentService {
             throw new RuntimeException("List is not geenrated.");
         if(listSearch.get().isEmpty())
             throw new RuntimeException("List for department with id "+departmentDto.getId()+" is empty.");
-        HeadOfDepartment result = listSearch.get().getLast();
-        Department department = result.getMember().getDepartment();
-        return new HeadOfDepartmentDto(new DepartmentDto(department.getId(),department.getName()),result.getMember().getId(),result.getId(),result.getMember().getFirstName(),result.getMember().getLastName(),result.getMember().getEducationTitle().getTitle());
+        HeadOfDepartment result = listSearch.get().get(listSearch.get().size()-1);
+        return new HeadOfDepartmentConverter().toDto(result);
+
     }
 
     @Override
     public List<HeadOfDepartmentDto> getAllHadOfDepartments() {
-        return headOfDepartmentRepository.findAll().stream().map(h->new HeadOfDepartmentDto(new DepartmentDto(h.getMember().getDepartment().getId(),h.getMember().getDepartment().getName()),h.getMember().getId(),h.getId(),h.getMember().getFirstName(),h.getMember().getLastName(),h.getMember().getEducationTitle().getTitle())).toList();
-
+        return headOfDepartmentRepository.findAll().stream().map(h->new HeadOfDepartmentConverter().toDto(h)).toList();
     }
 
     @Override
@@ -48,28 +48,28 @@ public class HeadOfDepartmentServiceImpl implements HeadOfDepartmentService {
         Optional<List<HeadOfDepartment>> listSearch = headOfDepartmentRepository.findByDepartmentId(departmentDto.getId());
         if(listSearch.isEmpty())
             throw new RuntimeException("Department with id "+ departmentDto.getId()+ "doesn't exist.");
-        return listSearch.get().stream().map(h->new HeadOfDepartmentDto(new DepartmentDto(h.getMember().getDepartment().getId(),h.getMember().getDepartment().getName()),h.getMember().getId(),h.getId(),h.getMember().getFirstName(),h.getMember().getLastName(),h.getMember().getEducationTitle().getTitle())).toList();
+        return listSearch.get().stream().map(h->new HeadOfDepartmentConverter().toDto(h)).toList();
     }
 
     @Override
     public HeadOfDepartmentDto createHeadOfDepartment(HeadOfDepartmentDto headOfDepartmentDto) throws Exception {
         Optional<Member> memberSearch = checkMember(headOfDepartmentDto);
-        HeadOfDepartment headOfDepartment = new HeadOfDepartment(headOfDepartmentDto.getId(),memberSearch.get());
+        HeadOfDepartment headOfDepartment = new HeadOfDepartmentConverter().toEntity(headOfDepartmentDto);
         headOfDepartment =headOfDepartmentRepository.save(headOfDepartment);
-        return new HeadOfDepartmentDto(new DepartmentDto(headOfDepartment.getMember().getDepartment().getId(),headOfDepartment.getMember().getDepartment().getName()),headOfDepartment.getMember().getId(),headOfDepartment.getId(),headOfDepartment.getMember().getFirstName(),headOfDepartment.getMember().getLastName(),headOfDepartment.getMember().getEducationTitle().getTitle());
+        return new HeadOfDepartmentConverter().toDto(headOfDepartment);
     }
 
     private Optional<Member> checkMember(HeadOfDepartmentDto headOfDepartmentDto) {
-        Optional<Member> memberSearch = memberRepository.findById(new MemberId(headOfDepartmentDto.getMemberId(),new Department(headOfDepartmentDto.getDepartment().getId())));
+        Optional<Member> memberSearch = memberRepository.findById(headOfDepartmentDto.getMember().getId());
         if(memberSearch.isEmpty())
-            throw new RuntimeException("Member with id"+ headOfDepartmentDto.getMemberId()+" and department id "+ headOfDepartmentDto.getDepartment().getId()+" doesn't exist");
+            throw new RuntimeException("Member with id"+ headOfDepartmentDto.getMember().getId()+" doesn't exist");
         return memberSearch;
     }
 
     @Override
     public HeadOfDepartmentDto deleteHeadOfDepartment(HeadOfDepartmentDto headOfDepartmentDto) throws Exception {
         Optional<Member> memberSearch = checkMember(headOfDepartmentDto);
-        HeadOfDepartment headOfDepartment = new HeadOfDepartment(headOfDepartmentDto.getId(),memberSearch.get());
+        HeadOfDepartment headOfDepartment = new HeadOfDepartmentConverter().toEntity(headOfDepartmentDto);
         headOfDepartmentRepository.delete(headOfDepartment);
         return headOfDepartmentDto;
     }

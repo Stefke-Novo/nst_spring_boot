@@ -2,24 +2,32 @@ package fon.stefan.januarski_rok.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import fon.stefan.januarski_rok.converter.impl.AcademicTitleConverter;
+import fon.stefan.januarski_rok.converter.impl.AcademicTitleHistoryConverter;
+import fon.stefan.januarski_rok.converter.impl.MemberConverter;
+import fon.stefan.januarski_rok.converter.impl.ScientificFieldConverter;
+import fon.stefan.januarski_rok.dto.AcademicTitleHistoryDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import org.hibernate.annotations.Cascade;
+import lombok.*;
 
+import java.text.ParseException;
 import java.util.Date;
+@Setter
+@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "academic_title_history")
 @IdClass(AcademicTitleHistoryId.class)
 public class AcademicTitleHistory{
 
+    @JsonBackReference
+    @NotEmpty(message = "Entity must have Entity Member.")
     @Id
     @ManyToOne(optional = false,cascade = CascadeType.ALL,targetEntity = Member.class,fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumns({
-            @JoinColumn(name = "department_id", referencedColumnName = "department_id",columnDefinition = "bigint unsigned",nullable = false),
-            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned",nullable = false)
-    })
-    @NotEmpty(message = "Entity must have Entity Member.")
+    @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned",nullable = false)
     private Member member;
 
     @Id
@@ -44,68 +52,23 @@ public class AcademicTitleHistory{
     @Column(name = "end_date", nullable = true)
     private Date endDate;
 
-    public AcademicTitleHistory(){
 
+    public AcademicTitleHistory(Member member, String academicTitle, String scientificField) {
+        this.member=member;
+        this.academicTitle=new AcademicTitle(0,academicTitle);
+        this.scientificField=new ScientificField(0,scientificField);
     }
 
-    public AcademicTitleHistory(Member member, AcademicTitle academicTitle, ScientificField scientificField, Date startDate, Date endDate) {
-        this.member = member;
-        this.academicTitle = academicTitle;
-        this.scientificField = scientificField;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+    public AcademicTitleHistory(AcademicTitleHistoryDto academicTitleHistoryDto) {
+        this.member = new MemberConverter().toEntity(academicTitleHistoryDto.getMemberDto());
+        this.scientificField=new ScientificFieldConverter().toEntity(academicTitleHistoryDto.getScientificFieldDto());
+        this.academicTitle = new AcademicTitleConverter().toEntity(academicTitleHistoryDto.getAcademicTitleDto());
+        try {
+            this.startDate = AcademicTitleHistoryDto.toDate(academicTitleHistoryDto.getStartDate());
+            this.endDate = AcademicTitleHistoryDto.toDate(academicTitleHistoryDto.getEndDate());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
 
-    public AcademicTitleHistory(long departmentId, long memberId, String academicTitle, String scientificField){
-        this.member = new Member(departmentId,memberId);
-        this.academicTitle =new AcademicTitle(academicTitle, this);
-        this.scientificField = new ScientificField(scientificField);
-    }
-    public AcademicTitleHistory(Member member,String academicTitle, String scientificField){
-        this.member = member;
-        this.academicTitle =new AcademicTitle(academicTitle, this);
-        this.scientificField = new ScientificField(scientificField);
-        this.setStartDate(new Date());
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public AcademicTitle getAcademicTitle() {
-        return academicTitle;
-    }
-
-    public void setAcademicTitle(AcademicTitle academicTitle) {
-        this.academicTitle = academicTitle;
-    }
-
-
-    public ScientificField getScientificField() {
-        return scientificField;
-    }
-
-    public void setScientificField(ScientificField scientificField) {
-        this.scientificField = scientificField;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 }

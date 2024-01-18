@@ -40,12 +40,12 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectDto save(SubjectDto subjectDto) throws Exception {
         //sacuvaj subject
         Subject subject = subjectConverter.toEntity(subjectDto);
-        if(subject.getPdepartment().getId()==0){
-            departmentRepository.save(subject.getPdepartment());
+        if(subject.getDepartment().getId()==0){
+            departmentRepository.save(subject.getDepartment());
         }else{
-            Optional<Department> dep = departmentRepository.findById(subject.getPdepartment().getId());
+            Optional<Department> dep = departmentRepository.findById(subject.getDepartment().getId());
             if(dep.isEmpty()){
-                departmentRepository.save(subject.getPdepartment());
+                departmentRepository.save(subject.getDepartment());
             }
         }
         subjectRepository.save(subject);
@@ -63,7 +63,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public void delete(Long id) throws Exception {
-        Optional<Subject> subject = subjectRepository.findById(new SubjectId(id));
+        Optional<Subject> subject = subjectRepository.findById(id);
         if (subject.isPresent()) {
             Subject subj = subject.get();
             subjectRepository.delete(subj);
@@ -80,7 +80,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public SubjectDto findById(Long id) throws Exception {
-        Optional<Subject> subject = subjectRepository.findById(new SubjectId(id));
+        Optional<Subject> subject = subjectRepository.findById(id);
         if (subject.isPresent()) {
             //postoji
             Subject subj = subject.get();

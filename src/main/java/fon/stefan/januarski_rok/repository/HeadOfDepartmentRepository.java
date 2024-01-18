@@ -10,6 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HeadOfDepartmentRepository extends JpaRepository<HeadOfDepartment, HeadOfDepartmentId> {
-    @Query("SELECT hod FROM HeadOfDepartment hod WHERE hod.member.pdepartment.id=:departmentId")
+    @Query("SELECT hod FROM HeadOfDepartment hod WHERE hod.member.department.id=:departmentId")
     Optional<List<HeadOfDepartment>> findByDepartmentId(@Param("departmentId") long id);
 }

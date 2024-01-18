@@ -1,5 +1,6 @@
 package fon.stefan.januarski_rok.service.impl;
 
+import fon.stefan.januarski_rok.converter.impl.MemberConverter;
 import fon.stefan.januarski_rok.domain.*;
 import fon.stefan.januarski_rok.dto.MemberDto;
 import fon.stefan.januarski_rok.repository.*;
@@ -38,48 +39,49 @@ public class MemberServiceImpl implements MemberService {
     }
     @Override
     public MemberDto createMember(MemberDto member) throws Exception {
-        Member result = new Member(member.getDepartmentId(),member.getId(),member.getFirstName(),member.getLastName(),member.getAcademicTitle(),member.getEducationTitle(),member.getScientificField());
-
-        checkEducationTitle(member, result);
-        ckeckDepartment(member, result);
-        //TO DO : popuniti stari date za Member-a
-        savingAcademicTitle(result);
-        savingMember(result);
-        savingScientificField(result);
-        result.setId(result.getAcademicTitles().getFirst().getMember().getId());
-        academicTitleHistoryRepository.save(result.getAcademicTitles().getFirst());
-        MemberDto resultDto = new MemberDto(result.getDepartment().getId(),result.getId(),result.getFirstName(),result.getLastName(),result.getEducationTitle(),result.getAcademicTitles().getFirst(),result.getAcademicTitles().getFirst().getAcademicTitle(),result.getAcademicTitles().getFirst().getScientificField());
-        resultDto.setFirstName(result.getFirstName());
-        resultDto.setLastName(result.getLastName());
-        resultDto.setEducationTitle(result.getEducationTitle().getTitle());
-        return resultDto;
+//        Member result = new Member(member.getDepartmentId(),member.getId(),member.getFirstName(),member.getLastName(),member.getAcademicTitle(),member.getEducationTitle(),member.getScientificField());
+//
+//        checkEducationTitle(member, result);
+//        ckeckDepartment(member, result);
+//        //TO DO : popuniti stari date za Member-a
+//        savingAcademicTitle(result);
+//        savingMember(result);
+//        savingScientificField(result);
+//        result.setId(result.getAcademicTitles().getFirst().getMember().getId());
+//        academicTitleHistoryRepository.save(result.getAcademicTitles().getFirst());
+//        MemberDto resultDto = new MemberDto(result.getDepartment().getId(),result.getId(),result.getFirstName(),result.getLastName(),result.getEducationTitle(),result.getAcademicTitles().getFirst(),result.getAcademicTitles().getFirst().getAcademicTitle(),result.getAcademicTitles().getFirst().getScientificField());
+//        resultDto.setFirstName(result.getFirstName());
+//        resultDto.setLastName(result.getLastName());
+//        resultDto.setEducationTitle(result.getEducationTitle().getTitle());
+//        return resultDto;
+          return new MemberDto();
     }
 
     @Override
     public MemberDto getMember(MemberDto member) throws Exception {
-        Optional<Member> memberSearch = memberRepository.findById(new MemberId(member.getId(),new Department(member.getDepartmentId())));
+        Optional<Member> memberSearch = memberRepository.findById(member.getId());
         if(memberSearch.isEmpty())
-            throw new RuntimeException("Member with department id "+member.getDepartmentId()+" and id "+member.getId()+" doesn't exist.");
+            throw new RuntimeException("Member with department id "+member.getDepartment().getId()+" and id "+member.getId()+" doesn't exist.");
         Member result = memberSearch.get();
-        return new MemberDto(result.getDepartment().getId(),result.getId(),result.getFirstName(),result.getLastName(),result.getEducationTitle());
+        return new MemberConverter().toDto(result);
     }
 
     @Override
     public List<MemberDto> getAllMembers() {
-        return memberRepository.findAll().stream().map(member->new MemberDto(member.getDepartment().getId(),member.getId(),member.getFirstName(),member.getLastName(),member.getEducationTitle())).toList();
+        return memberRepository.findAll().stream().map(member->new MemberConverter().toDto(member)).toList();
     }
 
     @Override
     public MemberDto updateMember(MemberDto member) throws Exception {
-        Optional<Member> memberSearch = memberRepository.findById(new MemberId(member.getId(),new Department(member.getId())));
+        Optional<Member> memberSearch = memberRepository.findById(member.getId());
         if(memberSearch.isEmpty())
-            throw new RuntimeException("Member with id "+member.getId()+"and department id"+member.getDepartmentId()+" doesn't exist.");
+            throw new RuntimeException("Member with id "+member.getId()+"and department id"+member.getDepartment().getId()+" doesn't exist.");
         Member result = memberSearch.get();
         checkEducationTitle(member,result);
         result.setFirstName(member.getFirstName());
         result.setLastName(member.getLastName());
         result = memberRepository.save(result);
-        return new MemberDto(result.getDepartment().getId(),result.getId(),result.getFirstName(),result.getLastName(),result.getEducationTitle());
+        return new MemberConverter().toDto(result);
     }
 
     @Override
@@ -87,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
         Member result = new Member();
         findMember(member,result);
         memberRepository.delete(result);
-        Optional<Member> memberSearch = memberRepository.findById(new MemberId(member.getId(),new Department(member.getDepartmentId())));
+        Optional<Member> memberSearch = memberRepository.findById(member.getId());
         if(memberSearch.isPresent())
             throw new RuntimeException("Member data must be deleted first.");
         return member;
@@ -99,31 +101,31 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private void findMember(MemberDto member, Member result) {
-        Optional<Department> departmentSearch = departmentRepository.findById(member.getDepartmentId());
+        Optional<Department> departmentSearch = departmentRepository.findById(member.getDepartment().getId());
         if(departmentSearch.isEmpty())
-            throw new RuntimeException("Department with given id "+ member.getDepartmentId()+" doesn't exist.");
+            throw new RuntimeException("Department with given id "+ member.getDepartment().getId()+" doesn't exist.");
         result.setDepartment(departmentSearch.get());
     }
 
     private void checkEducationTitle(MemberDto member, Member result) throws Exception {
-        Optional<EducationTitle> educationTitleSearch = educationTitleRepository.findByTitle(member.getEducationTitle());
+        Optional<EducationTitle> educationTitleSearch = educationTitleRepository.findByTitle(member.getEducationTitle().getTitle());
         if(educationTitleSearch.isEmpty())
             throw new Exception("No existing education title with the name.");
         result.setEducationTitle(educationTitleSearch.get());
     }
 
     private void savingAcademicTitle(Member result) {
-        AcademicTitle academicTitle = academicTitleRepository.saveAndFlush(result.getAcademicTitles().getFirst().getAcademicTitle());
-        result.getAcademicTitles().getFirst().setAcademicTitle(academicTitle);
+//        AcademicTitle academicTitle = academicTitleRepository.saveAndFlush(result.getAcademicTitles().getFirst().getAcademicTitle());
+//        result.getAcademicTitles().getFirst().setAcademicTitle(academicTitle);
     }
     private void savingMember(Member result){
-        Member memberReference = memberRepository.saveAndFlush(result.getAcademicTitles().getFirst().getMember());
-        result.getAcademicTitles().getFirst().setMember(memberReference);
+//        Member memberReference = memberRepository.saveAndFlush(result.getAcademicTitles().getFirst().getMember());
+//        result.getAcademicTitles().getFirst().setMember(memberReference);
     }
 
     private void savingScientificField(Member result){
-        ScientificField scientificFieldReference = scientificFieldRepository.saveAndFlush(result.getAcademicTitles().getFirst().getScientificField());
-        result.getAcademicTitles().getFirst().setScientificField(scientificFieldReference);
+//        ScientificField scientificFieldReference = scientificFieldRepository.saveAndFlush(result.getAcademicTitles().getFirst().getScientificField());
+//        result.getAcademicTitles().getFirst().setScientificField(scientificFieldReference);
     }
 
 

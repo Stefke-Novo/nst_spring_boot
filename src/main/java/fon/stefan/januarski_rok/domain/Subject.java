@@ -1,18 +1,26 @@
 package fon.stefan.januarski_rok.domain;
 
+import fon.stefan.januarski_rok.converter.impl.DepartmentConverter;
+import fon.stefan.januarski_rok.dto.SubjectDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Getter
+@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "subject",uniqueConstraints = @UniqueConstraint(columnNames = {"department_id"}))
-@IdClass(SubjectId.class)
+//@IdClass(SubjectId.class)
 public class Subject implements Serializable {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",columnDefinition = "bigint unsigned")
     private long id;
 
@@ -21,60 +29,17 @@ public class Subject implements Serializable {
     @Column(name = "name")
     private String name;
     @Column(name = "espb")
-    private int esbp;
+    private int espb;
 
-    @Id
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
-    private Department pdepartment;
+    private Department department;
 
-    public Subject() {
+    public Subject(SubjectDto dto) {
+        this.id=dto.getId();
+        this.name=dto.getName();
+        this.espb=dto.getEspb();
+        this.department=new DepartmentConverter().toEntity(dto.getDepartmentDto());
     }
 
-    public Subject(Long id, String name, int esbp, Department pdepartment) {
-        this.id = id;
-        this.name = name;
-        this.esbp = esbp;
-        this.pdepartment = pdepartment;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getEsbp() {
-        return esbp;
-    }
-
-    public void setEsbp(int esbp) {
-        this.esbp = esbp;
-    }
-
-    public Department getPdepartment() {
-        return pdepartment;
-    }
-
-    public void setPdepartment(Department pdepartment) {
-        this.pdepartment = pdepartment;
-    }
-
-//    public long getDepartmentId() {
-//        return departmentId;
-//    }
-//
-//    public void setDepartmentId(long departmentId) {
-//        this.departmentId = departmentId;
-//    }
 }

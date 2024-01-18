@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AcademicTitleHistoryRepository extends JpaRepository<AcademicTitleHistory, AcademicTitleHistoryId> {
-    @Query("SELECT ath FROM AcademicTitleHistory ath WHERE ath.member.id=:memberId AND ath.member.pdepartment.id=:departmentId")
+    @Query("SELECT ath FROM AcademicTitleHistory ath WHERE ath.member.id=:memberId AND ath.member.department.id=:departmentId")
     Optional<List<AcademicTitleHistory>> findByDepartmentIdAndMemberId(@Param("departmentId") long departmentId, @Param("memberId") long memberId);
 }

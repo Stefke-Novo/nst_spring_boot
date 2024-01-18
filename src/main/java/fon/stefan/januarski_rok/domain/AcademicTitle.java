@@ -1,20 +1,19 @@
 package fon.stefan.januarski_rok.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import fon.stefan.januarski_rok.dto.AcademicTitleDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import lombok.*;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-
+@Setter
+@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "academic_title")
 public class AcademicTitle {
@@ -22,6 +21,8 @@ public class AcademicTitle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "bigint unsigned")
     private long id;
+
+
     @NotEmpty(message = "Title must not be empty.")
     @Column(name = "title")
     private String title;
@@ -33,37 +34,16 @@ public class AcademicTitle {
     @OneToMany(mappedBy = "academicTitle",cascade = CascadeType.ALL,targetEntity = AcademicTitleHistory.class,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<AcademicTitleHistory> memberList;
 
-    public AcademicTitle(){
-
-    }
-    public AcademicTitle(String title, AcademicTitleHistory members){
-        this.title=title;
-        this.memberList=new ArrayList<>(Collections.singletonList(members));
-    }
-    public String getTitle() {
-        return title;
+    public AcademicTitle(int i, String academicTitle) {
+        this.id=i;
+        this.title=academicTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public AcademicTitle(AcademicTitleDto academicTitleDto) {
+        this.id=academicTitleDto.getId();
+        this.title= academicTitleDto.getTitle();
     }
 
-    public List<AcademicTitleHistory> getMemberList() {
-        return memberList;
-    }
-
-    public void setMemberList(List<AcademicTitleHistory> memberList) {
-        this.memberList = memberList;
-        this.memberList.forEach(member->member.setAcademicTitle(this));
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {

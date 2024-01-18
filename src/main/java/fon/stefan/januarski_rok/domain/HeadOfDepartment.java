@@ -3,43 +3,31 @@ package fon.stefan.januarski_rok.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "head_of_department")
 @IdClass(HeadOfDepartmentId.class)
 public class HeadOfDepartment {
+
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "bigint unsigned")
     private long id;
 
-    @JsonBackReference
     @Id
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "department_id",referencedColumnName = "department_id",columnDefinition = "bigint unsigned"),
-            @JoinColumn(name = "member_id",referencedColumnName = "id",columnDefinition = "bigint unsigned")
-    })
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id",referencedColumnName = "id", columnDefinition = "bigint unsigned")
     private Member member;
 
-    public HeadOfDepartment(long id, Member member) {
-        this.id = id;
-        this.member = member;
-    }
+    @Id
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id",referencedColumnName = "id", columnDefinition = "bigint unsigned")
+    private Department department;
 
-    public Member getMember() {
-        return member;
-    }
 
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

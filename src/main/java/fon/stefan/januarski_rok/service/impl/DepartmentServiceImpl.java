@@ -87,7 +87,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if(departmentObj.isEmpty())
             throw new Exception("Department with id = "+id+"not found.");
         Department department = departmentObj.get();
-        return new DepartmentDto(department);
+        return new DepartmentDto(department.getId(),department.getName(),department.getShortName());
     }
 
     @Override

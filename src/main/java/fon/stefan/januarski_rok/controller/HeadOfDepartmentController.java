@@ -35,7 +35,7 @@ public class HeadOfDepartmentController {
     public ResponseEntity<HeadOfDepartmentDto> createHeadOfDepartment(@RequestBody HeadOfDepartmentDto headOfDepartmentDto) throws Exception {
         return ResponseEntity.ok(headOfDepartmentService.createHeadOfDepartment(headOfDepartmentDto));
     }
-    @GetMapping(path = "/history")
+    @PostMapping(path = "/history")
     public ResponseEntity<List<HeadOfDepartmentDto>> getHeadOfDepartmentHistory(@RequestBody DepartmentDto departmentDto) throws Exception {
         return ResponseEntity.ok(headOfDepartmentService.getHeadOfDepartmentHistory(departmentDto));
     }

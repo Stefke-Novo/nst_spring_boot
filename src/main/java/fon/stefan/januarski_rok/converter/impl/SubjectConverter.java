@@ -11,19 +11,11 @@ public class SubjectConverter implements DtoEntityConverter<SubjectDto, Subject>
 
     @Override
     public SubjectDto toDto(Subject entity) {
-        return new SubjectDto(
-                entity.getId(),
-                entity.getName(), entity.getEsbp(),
-                departmentConverter.toDto(entity.getPdepartment())
-        );
+        return new SubjectDto(entity);
     }
 
     @Override
     public Subject toEntity(SubjectDto dto) {
-        return new Subject(
-                dto.getId(),
-                dto.getName(),
-                dto.getEspb(),
-                departmentConverter.toEntity(dto.getDepartmentDto()));
+        return new Subject(dto);
     }
 }

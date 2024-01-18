@@ -14,7 +14,8 @@
 	<name>januarski_rok</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>21</java.version>
+<!--		<java.version>21</java.version>-->
+            <java.version>17</java.version>
 		<start-class>src.main.java.fon.stefan.januarski_rok.JanuarskiRokApplication</start-class>
 	</properties>
 	<dependencies>
@@ -65,6 +66,10 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 			<version>6.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 		</dependency>
 
 	</dependencies>

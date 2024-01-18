@@ -1,34 +1,24 @@
 package fon.stefan.januarski_rok.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fon.stefan.januarski_rok.domain.AcademicTitle;
+import lombok.*;
 
+@Getter
+@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AcademicTitleDto {
+
     @JsonProperty(value = "academic_title_id", required = true)
     private long id;
+
     @JsonProperty(value = "title")
     private String title;
 
-    public AcademicTitleDto() {
-    }
-
-    public AcademicTitleDto(long id, String title) {
-        this.id = id;
-        this.title = title;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public AcademicTitleDto(AcademicTitle academicTitle) {
+        this.id=academicTitle.getId();
+        this.title=academicTitle.getTitle();
     }
 }

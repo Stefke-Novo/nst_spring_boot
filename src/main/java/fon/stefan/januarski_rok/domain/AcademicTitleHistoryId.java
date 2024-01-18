@@ -1,32 +1,29 @@
 package fon.stefan.januarski_rok.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AcademicTitleHistoryId implements Serializable {
 
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumns({
-            @JoinColumn(name = "department_id", referencedColumnName = "department_id",columnDefinition = "bigint unsigned"),
-            @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
-    })
+    @JoinColumn(name = "member_id", referencedColumnName = "id",columnDefinition = "bigint unsigned")
     private Member member;
 
     @ManyToOne(optional = false,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "academic_title_id",referencedColumnName = "id",columnDefinition = "bigint unsigned")
     private AcademicTitle academicTitle;
-
-    public AcademicTitleHistoryId() {
-    }
-
-    public AcademicTitleHistoryId(Member member, AcademicTitle academicTitle){
-        this.member = member;
-        this.academicTitle = academicTitle;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -41,19 +38,4 @@ public class AcademicTitleHistoryId implements Serializable {
         return Objects.hash(member, academicTitle);
     }
 
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public AcademicTitle getAcademicTitle() {
-        return academicTitle;
-    }
-
-    public void setAcademicTitle(AcademicTitle academicTitle) {
-        this.academicTitle = academicTitle;
-    }
 }

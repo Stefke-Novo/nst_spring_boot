@@ -2,12 +2,18 @@ package fon.stefan.januarski_rok.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Setter
+@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "scientific_field")
 public class ScientificField {
@@ -17,42 +23,18 @@ public class ScientificField {
     private long id;
     private String name;
 
-    public ScientificField() {
-    }
     public ScientificField(String name){
         this.name = name;
     }
+
+
     @JsonBackReference
     @OneToMany(mappedBy = "scientificField",cascade = CascadeType.ALL,targetEntity = AcademicTitleHistory.class,fetch = FetchType.LAZY,orphanRemoval = true)
     private List<AcademicTitleHistory> memberList;
-    public ScientificField(long id, String name) {
-        this.id = id;
-        this.name = name;
-        this.memberList =new ArrayList<>();
-    }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<AcademicTitleHistory> getMemberList() {
-        return memberList;
-    }
-
-    public void setMemberList(List<AcademicTitleHistory> memberList) {
-        this.memberList = memberList;
+    public ScientificField(int i, String scientificField) {
+        this.id=i;
+        this.name=scientificField;
     }
 
     @Override

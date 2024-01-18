@@ -26,11 +26,11 @@ public class DepartmentSecretaryController {
     public ResponseEntity<DepartmentSecretaryDto> deleteDepartmentSecretary(@RequestBody DepartmentSecretaryDto departmentSecretaryDto) throws Exception {
         return new ResponseEntity<>(departmentSecretaryService.deleteDepartmentSecretary(departmentSecretaryDto),HttpStatus.OK);
     }
-    @GetMapping(path = "/current")
+    @PostMapping(path = "/current")
     public ResponseEntity<DepartmentSecretaryDto> getCurrentDepartmentSecretary(@RequestBody DepartmentDto departmentDto) throws Exception {
         return new ResponseEntity<>(departmentSecretaryService.currentDepartmentSecretary(departmentDto),HttpStatus.OK);
     }
-    @GetMapping(path = "/history")
+    @PostMapping(path = "/history")
     public ResponseEntity<List<DepartmentSecretaryDto>> getDepartmentSecretaryHistoryByDepartment(@RequestBody DepartmentDto departmentDto) throws Exception {
         return new ResponseEntity<>(departmentSecretaryService.getDepartmentSecretaryHistory(departmentDto), HttpStatus.OK);
     }

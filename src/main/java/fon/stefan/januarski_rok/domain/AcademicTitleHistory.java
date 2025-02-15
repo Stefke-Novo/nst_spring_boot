@@ -3,7 +3,6 @@ package fon.stefan.januarski_rok.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import fon.stefan.januarski_rok.converter.impl.AcademicTitleConverter;
-import fon.stefan.januarski_rok.converter.impl.AcademicTitleHistoryConverter;
 import fon.stefan.januarski_rok.converter.impl.MemberConverter;
 import fon.stefan.januarski_rok.converter.impl.ScientificFieldConverter;
 import fon.stefan.januarski_rok.dto.AcademicTitleHistoryDto;
@@ -49,7 +48,7 @@ public class AcademicTitleHistory{
 
     @Basic
     @Temporal(TemporalType.DATE)
-    @Column(name = "end_date", nullable = true)
+    @Column(name = "end_date")
     private Date endDate;
 
 

@@ -33,8 +33,6 @@ services:
    environment:
      - MYSQL_ALLOW_EMPTY_PASSWORD=true
      - MYSQL_DATABASE=januarski_rok
-#     - MYSQL_USER=root
-#     - MYSQL_PASSWORD=null
    ports:
      - 3307:3306
    networks:
@@ -44,6 +42,8 @@ services:
      interval: 10s
      timeout: 5s
      retries: 5
+   volumes:
+     - database:/var/lib/mysql
   Liquibase:
     # Image to be pulled from Docker Hub
     image: liquibase/liquibase:4.9.1
@@ -67,6 +67,9 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  database:
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

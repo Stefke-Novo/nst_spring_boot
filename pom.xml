@@ -74,34 +74,34 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- For Metrics -->
-		<!-- For OTLP -->
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-otlp</artifactId>
-		</dependency>
+<!--		&lt;!&ndash; For Metrics &ndash;&gt;-->
+<!--		&lt;!&ndash; For OTLP &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>io.micrometer</groupId>-->
+<!--			<artifactId>micrometer-registry-otlp</artifactId>-->
+<!--		</dependency>-->
 
-		<!-- Brave version -->
-		<!-- For Tracing -->
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-tracing-bridge-brave</artifactId>
-		</dependency>
-		<!-- For Latency Visualization -->
-		<!-- For OTLP -->
-		<dependency>
-			<groupId>io.zipkin.contrib.otel</groupId>
-			<artifactId>encoder-brave</artifactId>
-			<version>0.1.0</version>
-		</dependency>
+<!--		&lt;!&ndash; Brave version &ndash;&gt;-->
+<!--		&lt;!&ndash; For Tracing &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>io.micrometer</groupId>-->
+<!--			<artifactId>micrometer-tracing-bridge-brave</artifactId>-->
+<!--		</dependency>-->
+<!--		&lt;!&ndash; For Latency Visualization &ndash;&gt;-->
+<!--		&lt;!&ndash; For OTLP &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>io.zipkin.contrib.otel</groupId>-->
+<!--			<artifactId>encoder-brave</artifactId>-->
+<!--			<version>0.1.0</version>-->
+<!--		</dependency>-->
 
-		<!-- For pushing logs out -->
-		<dependency>
-			<groupId>com.github.loki4j</groupId>
-			<artifactId>loki-logback-appender</artifactId>
-			<version>1.5.2</version>
-			<scope>runtime</scope>
-		</dependency>
+<!--		&lt;!&ndash; For pushing logs out &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>com.github.loki4j</groupId>-->
+<!--			<artifactId>loki-logback-appender</artifactId>-->
+<!--			<version>1.5.2</version>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
 
 	</dependencies>
 

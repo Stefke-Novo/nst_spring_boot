@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql-c
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: app-c
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    disktype: ssd
+spec:
+  selector:
+    matchLabels:
+      disktype: ssd
+  template:
+    metadata:
+      labels:
+        disktype: ssd
+    spec:
+      volumes:
+        - name: database
+#          persistentVolumeClaim:
+#            claimName: mysql-pv-claim
+          emptyDir: {}
+      containers:
+        - name: app-c
+          image: app
+          imagePullPolicy: Never
+          ports:
+            - protocol: TCP
+              containerPort: 8081
+              name: "app-server"
+        - name: mysql-c
+          image: mysql
+          imagePullPolicy: IfNotPresent
+          ports:
+            - protocol: TCP
+              containerPort: 3306
+              name: "mysql-server"
+          volumeMounts:
+            - mountPath: "/var/lib/mysql"
+              name: database
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "true"
+            - name: MYSQL_DATABASE
+              value: "januarski_rok"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    disktype: ssd
+  name: my-service
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    disktype: ssd
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-port
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+#  defaultBackend:
+#    service:
+#      name: app-service
+#      port:
+#        number: 8081
+  ingressClassName: nginx
+  rules:
+    - host: my-app.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-service
+                port:
+                  number: 80
